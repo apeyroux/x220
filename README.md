@@ -1,4 +1,25 @@
-x220
-====
+X220 Configuration
+==================
 
-x220 configuration / NixOS
+NixOS
+-----
+
+http://nixos.org/
+
+Nixpkgs  
+-------
+
+http://nixos.org/nixpkgs/
+
+wvdial 
+------
+
+Pour abo 3G
+
+xmonad
+------
+
+Xorg
+----
+
+Integration de synaptics 
