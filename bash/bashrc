@@ -1,0 +1,17 @@
+alias vim='vim -N'
+
+PS1="\[\e]0;\u@\h: \w\a\]"
+# Choix de la couleur de l'utilisateur
+#       uid = 0    (root)                -> rouge
+#       uid < 1000 (utilisateur système) -> orange
+#       uid ≥ 1000 (utilisateur humain)  -> vert
+PS1="$PS1"'\[\e[$(
+        if   [ `id -u` -eq 0    ] ; then
+                echo "38;5;197"
+        elif [ `id -u` -ge 1000 ] ; then
+                echo "38;5;202"
+        else
+                echo "38;5;111" 
+        fi)m\]'
+# Fin du prompt
+PS1="$PS1\u\[\e[0m\]@\[\e[38;5;186m\]\h\[\e[0m\]:\e[38;5;213m\]\w\[\e[0m\]\\$ "
