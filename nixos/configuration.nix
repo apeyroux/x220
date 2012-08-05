@@ -7,6 +7,8 @@
   require =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./thinkpad.nix
+      <nixos/modules/programs/virtualbox.nix>
     ];
 
   boot.initrd.kernelModules =
@@ -14,6 +16,8 @@
       # filesystem.
       # "xfs" "ata_piix"
       "btrfs"
+      "vboxdrv"
+      #"tun" "virtio" "kvm-intel"
     ];
 
   # Use the GRUB 2 boot loader.
@@ -100,6 +104,8 @@
 		Phone = *99#
 		New PPPD = yes
 		Modem = /dev/ttyACM1
+		Username = \'\'
+		Password = \'\'
 		Baud = 460800
 		Stupid Mode = 1
 	'';
@@ -115,16 +121,25 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  # virtualbox
+  # services.virtualbox.enable = true;
+  #virtualisation.libvirtd.enable = true;
+  #virtualisation.libvirtd.enableKVM = true;
+  services.dbus.enable = true; # pour virt-manager
+  services.dbus.packages = [ pkgs.gnome.GConf ]; # https://nixos.org/wiki/Solve_GConf_errors_when_running_GNOME_applications
+
   # Enable the X11 windowing system.
   services.xserver = {
   	enable = true;
   	layout = "fr";
   	xkbOptions = "eurosign:e";
   	synaptics.enable = true;
+    thinkpad.enable = true;
   	windowManager.xmonad.enable = true;     # installs xmonad and makes it available
   	windowManager.i3.enable = true;
   	windowManager.default       = "xmonad"; # sets it as default
   	desktopManager.default      = "none";   # the plain xmonad experience
+    #displayManager.slim.enable = false;
   	autorun = true;
   };
  
@@ -134,7 +149,7 @@
       description = "";
       home = "/home/ja";
       group = "users";
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "vboxusers" ];
       createHome = true;
       useDefaultShell = true;
     }
