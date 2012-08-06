@@ -44,7 +44,7 @@ boot  home  luks-home  rootfs  swap
 
 Dans le configuration.nix
 ```
-boot.initrd.luks.devices =  [ { device = "vg_x220-lv_luks--home"; name = "luks-home"; preLVM = true; } ];
+boot.initrd.luks.devices =  [ { device = "/dev/mapper/vg_x220-lv_luks-home"; name = "luks-home"; preLVM = true; } ];
 ```
 
 WARNING!
