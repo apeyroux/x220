@@ -15,8 +15,7 @@
     [ # Specify all kernel modules that are necessary for mounting the root
       # filesystem.
       # "xfs" "ata_piix"
-      "btrfs"
-      "vboxdrv"
+      "btrfs" "vboxdrv" "vboxnetadp" "vboxnetflt" "dm_crypt" "sha256_generic" "sha1_generic" "cbc" "aes_x86_64" "aes_generic" "xts"
       #"tun" "virtio" "kvm-intel"
     ];
 
@@ -24,6 +23,9 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
   boot.loader.grub.device = "/dev/sda";
+
+  # Luks
+  boot.initrd.luks.devices =  [ { device = "/dev/sda3"; name = "rootfs"; preLVM = true; } ];
 
   time.timeZone = "Europe/Paris";
 
@@ -35,7 +37,7 @@
     wicd.enable = true;
   };
 
-  #powerManagement.enable = true;
+  powerManagement.enable = true;
   services.acpid.enable = true;
   services.acpid.lidEventCommands = "echo mem > /sys/power/state";
 
@@ -74,21 +76,21 @@
 
   environment.systemPackages =
     with pkgs;
-    [ vim screen mosh xpra
-      i3
+    [ vim screen mosh xpra wvdial sudo
+      #i3
       #gitAndTools.gitFull
       #gitAndTools.gitAnnex
       #subversion
-      pkgs.haskellPlatform
-      pkgs.haskellPackages.xmonad
-      pkgs.haskellPackages.xmonadExtras
+      #pkgs.haskellPlatform
+      #pkgs.haskellPackages.xmonad
+      #pkgs.haskellPackages.xmonadExtras
       #pkgs.firefoxWrapper
       #pkgs.chromeWrapper
       #chromeWrapper
-      lynx links w3m wget
-      wvdial
-      sudo 
-      gnupg
+      #lynx links w3m wget
+      #wvdial
+      #sudo 
+      #gnupg
     ];
 
   ##
