@@ -41,12 +41,6 @@ root@spof:~# ls /dev/disk/by-label/
 boot  home  luks-home  rootfs  swap
 ```
 
-
-Dans le configuration.nix
-```
-boot.initrd.luks.devices =  [ { device = "/dev/mapper/vg_x220-lv_luks-home"; name = "luks-home"; preLVM = true; } ];
-```
-
 WARNING!
 ========
 Cette action écrasera définitivement les données sur /dev/mapper/vg_x220-lv_luks--home.
