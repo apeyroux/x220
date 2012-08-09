@@ -1,4 +1,4 @@
-X220 Configuration
+220 Configuration
 ==================
 
 NixOS
@@ -18,37 +18,59 @@ Luks | LVM
 ----------
 
 ```
-lvcreate -L20G -n lv_luks-home vg_x220
+fdisk /dev/sda
+```
+
+Create 2 partitions (boot and luks) sda1 == boot, sda2 == luks
+Init de luks
+
 ```
 
 ```
-cryptsetup luksFormat -c aes-xts-plain -s 512 /dev/mapper/vg_x220-lv_luks-home
+
+Init de LVM dans Luks
+
+```
+cryptsetup luksFormat -c aes-xts-plain -s 512 /dev/sda2
+cryptsetup luksOpen /dev/sda2 rootfs
 ```
 
 ```
-cryptsetup luksOpen /dev/mapper/vg_x220-lv_luks-home  luks-home
+pvcreate /dev/mapper/rootfs
+vgcreate /dev/mapper/rootfs vg_x220
+lvcreate -L50G -n lv_luks-home vg_x220
+lvcreate -L20G -n lv_luks-rootfs vg_x220
+```
+
+Init de btrfs
+
+```
+mkfs.btrfs -Lhome /dev/mapper/vg_x220-lv_luks-home
+mkfs.btrfs -Lrootfs /dev/mapper/vg_x220-lv_luks-rootfs
+mount /dev/mapper/vg_x220-lv_luks-home /mnt
+cd /mnt
+btrfs subvol create home
+btrfs subvol create snap
+cd / && umount /mnt
+mount /dev/mapper/vg_x220-lv_luks-rootfs /mnt
+cd /mnt
+btrfs subvol create rootfs
+btrfs subvol create snap
 ```
 
 ```
-root@spof:~# mkfs.btrfs -L luks-home /dev/mapper/luks-home 
-
-WARNING! - Btrfs Btrfs v0.19 IS EXPERIMENTAL
-WARNING! - see http://btrfs.wiki.kernel.org before using
-
-fs created label luks-home on /dev/mapper/luks-home
-        nodesize 4096 leafsize 4096 sectorsize 4096 size 20.00GB
-Btrfs Btrfs v0.19
-root@spof:~# ls /dev/disk/by-label/
-boot  home  luks-home  rootfs  swap
+mount -ossd,compress=lzo,subvol=rootfs /dev/disk/by-label/rootfs /mnt
+mkdir /mnt/{boot,home}
+mount /dev/sda1 /mnt/boot
+mount -ossd,compress=lzo,subvol=home /dev/disk/by-label/home /mnt/home
+nixos-option -i
 ```
 
-WARNING!
-========
-Cette action écrasera définitivement les données sur /dev/mapper/vg_x220-lv_luks--home.
+Copy my config file (configuration.nix, thinkpad.nix hardware.nix) in /mnt/etc/nixos/
 
-Are you sure? (Type uppercase yes): YES
-Saisissez la phrase secrète LUKS : 
-Verify passphrase: 
+```
+nix-install
+```
 
 wvdial 
 ------
