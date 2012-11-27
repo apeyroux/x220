@@ -1,0 +1,1 @@
+KERNEL=="card0", ACTION=="change", RUN+="/home/ja/bin/hdmi.sh"
