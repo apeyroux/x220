@@ -8,14 +8,14 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./thinkpad.nix
-      <nixos/modules/programs/virtualbox.nix>
+      #<nixos/modules/programs/virtualbox.nix>
     ];
 
   boot.initrd.kernelModules =
     [ # Specify all kernel modules that are necessary for mounting the root
       # filesystem.
       # "xfs" "ata_piix"
-      "btrfs" "vboxdrv" "vboxnetadp" "vboxnetflt" "dm_crypt" "sha256_generic" "sha1_generic" "cbc" "aes_x86_64" "aes_generic" "xts"
+      "dm_crypt" "sha256_generic" "sha1_generic" "cbc" "aes_x86_64" "aes_generic" "xts" "tun" "virtio" "kvm-intel" "ppp" "ppp_generic" "pppoe"
       #"tun" "virtio" "kvm-intel"
     ];
 
@@ -25,40 +25,37 @@
   boot.loader.grub.device = "/dev/sda";
 
   # Luks
-  boot.initrd.luks.devices =  [ { device = "/dev/sda3"; name = "rootfs"; preLVM = true; } ];
+  boot.initrd.luks.devices =  [ { device = "/dev/sda5"; name = "spof"; preLVM = true; } ];
 
   time.timeZone = "Europe/Paris";
 
   networking = {
-    hostName = "spof"; 
-    wireless.enable = false;
+    hostName = "spof.j4.pe"; 
+    wireless.enable = true;
     #interfaceMonitor.enable = false;
-    useDHCP = false; 
-    wicd.enable = true;
+    useDHCP = true; 
+    #wicd.enable = true;
+    wireless.userControlled.enable = true;
+    wireless.interfaces = ["wlan0"];
   };
 
   powerManagement.enable = true;
   services.acpid.enable = true;
-  services.acpid.lidEventCommands = "echo mem > /sys/power/state";
+  #services.acpid.lidEventCommands = ["/nix/store/232chk6k12f1l7xg4rsbf0j3gbbl92zn-system-path/sbin/pm-suspend"];
+  services.acpid.lidEventCommands = "pm-suspend";
 
   # Add filesystem entries for each partition that you want to see
   # mounted at boot time.  This should include at least the root
   # filesystem.
   fileSystems =
-    [ { mountPoint = "/boot";
+    [ 
+      { mountPoint = "/boot";
          device = "/dev/disk/by-label/boot";
       }
 
-	{ mountPoint = "/home";
-	  device = "/dev/disk/by-label/home";
-          fsType = "btrfs";
-          options = "ssd,compress=lzo,rw";
-	}
-
       { mountPoint = "/"; # where you want to mount the device
         device = "/dev/disk/by-label/rootfs";  # the device
-        fsType = "btrfs";      # the type of the partition
-        options = "ssd,compress=lzo,rw,subvol=rootfs";
+        fsType = "ext4";      # the type of the partition
       }
     ];
 
@@ -76,7 +73,7 @@
 
   environment.systemPackages =
     with pkgs;
-    [ vim screen mosh xpra wvdial sudo
+    [ vim screen mosh xpra wvdial sudo i3 
       #i3
       #gitAndTools.gitFull
       #gitAndTools.gitAnnex
@@ -121,12 +118,11 @@
   # services.openssh.enable = true;
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
-  # virtualbox
-  # services.virtualbox.enable = true;
-  #virtualisation.libvirtd.enable = true;
-  #virtualisation.libvirtd.enableKVM = true;
+  # libvirt
+  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.enableKVM = true;
   services.dbus.enable = true; # pour virt-manager
   services.dbus.packages = [ pkgs.gnome.GConf ]; # https://nixos.org/wiki/Solve_GConf_errors_when_running_GNOME_applications
 
@@ -136,25 +132,15 @@
   	layout = "fr";
   	xkbOptions = "eurosign:e";
   	synaptics.enable = true;
-    thinkpad.enable = true;
-  	windowManager.xmonad.enable = true;     # installs xmonad and makes it available
+        thinkpad.enable = true;
+  	#windowManager.xmonad.enable = true;  
   	windowManager.i3.enable = true;
-  	windowManager.default       = "xmonad"; # sets it as default
-  	desktopManager.default      = "none";   # the plain xmonad experience
-    #displayManager.slim.enable = false;
+  	windowManager.default       = "i3"; # sets it as default
+  	#desktopManager.default      = "i3";  
+        #displayManager.slim.enable = false;
+	displayManager.slim.autoLogin = true;
+	#displayManager.slim.defaultUser = 'ja';
   	autorun = true;
   };
  
-  # users
-  users.extraUsers = [
-    { name = "ja";
-      description = "";
-      home = "/home/ja";
-      group = "users";
-      extraGroups = [ "wheel" "vboxusers" ];
-      createHome = true;
-      useDefaultShell = true;
-    }
-  ];
-
 }
