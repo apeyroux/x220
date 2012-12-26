@@ -1,0 +1,13 @@
+Bkp des packages de base
+========================
+
+```
+dpkg --get-selections > /backup/installed-software.log
+```
+
+Reinstallation des packages de base
+===================================
+
+```
+aptitude install $(cat /backup/installed-software.log)
+```
