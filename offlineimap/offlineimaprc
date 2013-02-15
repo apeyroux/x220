@@ -1,0 +1,42 @@
+[general]
+#ui = ttyui
+ui = TTY.TTYUI
+accounts = Atpxio
+
+[Account Atpxio]
+localrepository = Atpxio-Local
+remoterepository = Atpxio-Remote
+status_backend = sqlite
+
+[Repository Atpxio-Local]
+type = Maildir
+localfolders = ~/Mail/ja@px.io
+sep = .
+restoreatime = no
+maxconnections = 5
+nametrans = lambda folder: re.sub('spam', '[Gmail].Spam',
+                           re.sub('drafts', '[Gmail].Drafts',
+                           re.sub('sent', '[Gmail].Sent Mail',
+                           re.sub('flagged', '[Gmail].Starred',
+                           re.sub('trash', '[Gmail].Trash',
+                           re.sub('important', '[Gmail].Important',
+                           re.sub('archive', '[Gmail].All Mail', folder)))))))
+
+[Repository Atpxio-Remote]
+type = Gmail
+ssl = yes
+remoteuser = ja@px.io
+remotepass = ***REMOVED***
+realdelete = no
+maxconnections = 5
+nametrans = lambda folder: re.sub('.*Spam$', 'spam', 
+                           re.sub('.*Drafts$', 'drafts', 
+                           re.sub('.*Sent Mail$', 'sent', 
+                           re.sub('.*Starred$', 'flagged', 
+                           re.sub('.*Trash$', 'trash', 
+                           re.sub('.*Important$', 'important', 
+                           re.sub('.*All Mail$', 'archive', folder)))))))
+
+# newer offlineimap needs this
+cert_fingerprint = 6d1b5b5ee0180ab493b71d3b94534b5ab937d042
+#sslcacertfile = /etc/ssl/certs/ca-certificates.crt

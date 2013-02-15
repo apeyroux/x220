@@ -1,0 +1,64 @@
+# Couleurs par défaut
+color hdrdefault white        default 
+color quoted     red          default 
+color signature  brightblack  default
+color indicator  white        red
+color attachment black        green
+color error      red          default
+color message    white        default
+color search     black        yellow 
+color status     white        blue
+color tree       red          default
+color normal     white        default
+color tilde      green        default
+color bold       brightyellow default
+color markers    red          default
+
+# Substitution des couleurs sur un écran monochrome
+mono bold      bold
+mono underline underline
+mono indicator reverse
+
+# Couleurs des items de l'entête des messges
+color header brightwhite default "^(From|Subject):"
+color header red         default "^X-Junked-Because:"
+mono  header bold             "^(From|Subject|X-Junked-Because):"
+
+# Couleurs des items de l'index des messages
+color index brightgreen default ~N
+# color index brightgreen white "~N ~x \"april\.org\""
+color index black       yellow ~F
+color index black       green  ~T
+color index brightred    black  ~D
+mono  index bold               ~N
+mono  index bold               ~F
+mono  index bold               ~T
+mono  index bold               ~D
+
+# Mise en exergue d'éléments dans le corps du message
+
+# URLs
+color body brightblue  white "(http|https|ftp|news|telnet|finger)://[^ \">\t\r\n]*"
+color body brightblue  white "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+color body brightblue  white "news:[^ \">\t\r\n]*"
+mono  body bold              "(http|https|ftp|news|telnet|finger)://[^ \">\t\r\n]*"
+mono  body bold              "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
+mono  body bold              "news:[^ \">\t\r\n]*"
+
+# Adresses email
+color body brightblue  white "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+mono  body bold              "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# Smileys
+color body brightgreen default "[;:]-*[\)>\(<|]"
+color body brightgreen default "[\(\|\)]*c[:;=]"
+
+# Texte « en gras » (i.e. *gras*)
+color body brightblue  white "(^|[^[:alnum:][:punct:]])\\*[[:alnum:][:punct:]]+\\*([^[:alnum:][:punct:]]|$)"
+
+# Texte « en italique » (i.e. /italique/)
+color body brightblue  white "(^|[^[:alnum:][:punct:]])/[[:alnum:][:punct:]]+/([^[:alnum:][:punct:]]|$)"
+
+# Texte « souligné » (i.e. _souligné_)
+color body brightblue  white "(^|[^[:alnum:][:punct:]])_[[:alnum:][:punct:]]+_([^[:alnum:][:punct:]]|$)"
+

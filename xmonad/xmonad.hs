@@ -18,7 +18,8 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "xterm -bg black -fg grey"
+-- myTerminal      = "xterm -bg black -fg grey"
+myTerminal 	= "urxvt -e bash -c \"tmux -q has-session && exec tmux attach-session -d || exec tmux new-session -n$USER -s$USER@$HOSTNAME\""
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -48,8 +49,8 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
+myNormalBorderColor  = "#0B3861"
+myFocusedBorderColor = "#0489B1"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -59,6 +60,26 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
+    -- multimedia keys
+    --
+    -- XF86AudioLowerVolume
+    , ((0            , 0x1008ff11), spawn "amixer -q set Master 5%+ unmute")
+
+    -- XF86AudioRaiseVolume
+    , ((0            , 0x1008ff13), spawn "amixer -q set Master 5%- unmute")
+
+    -- XF86AudioMute
+    , ((0            , 0x1008ff12), spawn "amixer -q set Master toggle")
+
+    -- XF86AudioNext
+    , ((0            , 0x1008ff17), spawn "mocp -f")
+
+    -- XF86AudioPrev
+    , ((0            , 0x1008ff16), spawn "mocp -r")
+
+    -- XF86AudioPlay
+    , ((0            , 0x1008ff14), spawn "mocp -G")
+    
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "dmenu_run")
 

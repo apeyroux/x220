@@ -1,0 +1,13 @@
+# (from /proc/asound/cards)
+
+defaults.pcm.dmix.rate 96000
+
+pcm.!default {
+    type hw
+    card DACE17
+}
+
+ctl.!default {
+    type hw
+    card DACE17
+}

@@ -1,0 +1,84 @@
+# main options
+set realname            = "Jean-Alexandre Peyroux"      # who am i?
+set from                = "m@j4.pe"                    # who am i?
+set envelope_from                                       # which from?
+my_hdr X-Operating-System: `uname -a`
+set send_charset="utf-8:iso-8859-1"
+set mail_check          = 0                             # check for mail always
+unset move                                              # gmail does that
+set delete                                              # don't ask, just do
+unset confirmappend                                     # don't ask, just do!
+set quit                                                # don't ask, just do!!
+unset mark_old                                          # read/new is good enough for me
+set mail_check=1                                        # Délai de rafraîchissement de la boîte aux lettres (en minutes)
+set tmpdir=~/tmp/mutt # répertoire où seront placés les fichiers temporaires 
+set signature=~/.mutt/signature
+
+# index options
+set sort                = threads                       # like gmail 
+set sort_aux            = reverse-last-date-received    # like gmail
+set sort_re                                             # thread based on reply_regexp
+
+# Mail-check preferences
+set timeout=60  #Check for mail every minute
+set mail_check=5
+
+# pager
+set pager_index_lines   = 8                             # show 8 messages when in pager
+set pager_context       = 5                             # show five lines when skipping in pager
+set pager_stop                                          # don't go to next message automatically
+set menu_scroll                                         # scroll in menus 
+set smart_wrap                                          # don't split words
+set tilde                                               # show tildes like in vim
+unset markers                                           # no ugly plus signs
+set nohelp
+
+# composing mail
+set fcc_attach                                          # save attachments with the body
+unset mime_forward                                      # forward attachments as part of body
+set forward_format      = "Fwd: %s"                     # format for subject when forwarding
+set include                                             # include message in replies
+set forward_quote                                       # include message in forwards
+#set editor='vim + -c "set textwidth=72"'
+set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "?^$"'
+
+# headers to show
+ignore *                                                # ignore all headers
+unignore from: to: cc: date: subject:                   # show only these
+hdr_order from: to: cc: date: subject:                  # and in this ordero
+
+# options
+set mbox_type   = Maildir               # mailbox type
+set folder      = ~/Mail          # root folder
+#set spoolfile   = "+INBOX"              # inbox
+#set mbox        = "+archive"            # [Gmail]/All Mail
+#set postponed   = "[Gmail]/drafts"             # [Gmail]/Drafts
+unset record                            # required to prevent duplicates in Sent
+
+set sendmail    = "/usr/bin/msmtp" # use msmtp 'default' account
+#set sendmail    = "/usr/bin/msmtp -a GMail" # use msmtp 'default' account
+#set sendmail    = "/usr/bin/msmtp -a Hush" # use msmtp 'default' account
+#set sendmail = /usr/sbin/ssmtp
+unset record
+
+# mailboxes
+mailboxes +INBOX +archive +sent +drafts +spam +trash
+
+# bindings
+#macro index D "<save-message>+trash<enter>"   "move message to the trash"
+#macro index S "<save-message>+spam<enter>"    "mark message as spam"
+macro index G "!/usr/bin/offlineimap -u Blinkenlights -a GMail\n"
+macro pager G "!/usr/bin/offlineimap  -u Blinkenlights -a GMail\n"
+
+### Commande spécifique pour le répertoire abook
+set query_command = "abook --mutt-query '%s'"
+macro generic,index,pager a "<shell-escape>abook<return>" "lance abook"
+macro index,pager A "<pipe-message>abook --add-email<return>" "ajoute l'adresse de l'envoyeur à abook"
+### FIN abook
+
+# autoview
+auto_view text/html
+
+#source ~/.mutt/aliases
+source ~/.mutt/colors
+source ~/.mutt/gpg

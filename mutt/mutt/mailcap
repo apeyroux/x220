@@ -1,0 +1,3 @@
+text/html; w3m -I %{charset} -T text/html -dump; copiousoutput 
+video/quicktime; mplayer %s 
+application/pdf; xpdf %s
