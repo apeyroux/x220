@@ -1,8 +1,13 @@
-220 Configuration
-==================
+.: X220 Configuration :.
+========================
 
 OpenBSD
 =======
+
+Installation
+------------
+
+Remove Ericsson F5521GW for install. Other run out of the box.
 
 Encrypt home
 ------------
@@ -22,7 +27,6 @@ mount /dev/vnd0c
 fsck -p /dev/vnd0a
 mount /home
 ```
-
 
 NetBSD
 ======
