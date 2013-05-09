@@ -31,6 +31,33 @@ mount /home
 NetBSD
 ======
 
+XEN
+---
+
+```dd if=/dev/zero of=/home/xen/domains/mail.ifup.sh/disk-10G.os.img bs=1M count=1 seek=10K```
+
+```
+name        = 'mail.ifup.sh'
+
+vcpus       = '2'
+memory      = '2048'
+
+#kernel      = "/root/kernel-domU//netbsd-INSTALL_XEN3_DOMU"  
+kernel      = "/root/kernel-domU//netbsd_XEN3_DOMU"
+root        = 'xbd0'
+disk        = [ 'file:/home/xen/domains/mail.ifup.sh/disk.os.img,xvda2,w',
+                'file:/home/xen/domains/mail.ifup.sh/disk.data.img,xvda3,w',]
+#vfb        = [ 'type=vnc,vncdisplay=1,vncpasswd='',vnclisten=0.0.0.0' ] 
+vif         = [ 'bridge=br0' ]
+vif         = [ 'bridge=br1' ]
+
+on_poweroff = 'destroy'
+on_reboot   = 'restart'
+on_crash    = 'restart'
+```
+
+
+
 HSDPA
 -----
 
