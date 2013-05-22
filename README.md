@@ -31,6 +31,11 @@ mount /home
 NetBSD
 ======
 
+Sound
+-----
+
+```mixerctl -w outputs.master++```
+
 XEN
 ---
 
