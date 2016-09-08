@@ -136,5 +136,5 @@ NixOS
 
 http://nixos.org/
 
-* [Intégration du trackpad du X220](https://github.com/j4/x220/blob/master/nixos/thinkpad.nix) dans le Xorg de NixOS.
+* [Intégration du trackpad du X220](https://github.com/41px/nixos-configuration/blob/master/x220/configuration.nix) dans le Xorg de NixOS.
 * Installation de luks,btrfs - chmod 0755 sur les subvol
